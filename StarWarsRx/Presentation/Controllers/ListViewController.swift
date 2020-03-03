@@ -16,36 +16,44 @@ class ListViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     
+ 
     @IBOutlet weak var viewCard: UIView!
+    
+    var style:UIStatusBarStyle = .lightContent
+
+    
+
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+
+        return self.style
+
+    }
     
     var viewModel: ListViewModel!
     var disposeBag = DisposeBag()
-    var delegate: ListViewControllerDelegate?
-    
-    
+    private var _delegate: ListViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.getSW()
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.layer.masksToBounds = true
-        view1.layer.cornerRadius = 18
-        view2.layer.cornerRadius = 18
-        view3.layer.cornerRadius = 18
-        
-        
-        
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "nave.png")!)
+        tableView.backgroundColor = .clear
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "dartvader.jpg")!)
+       
+     
+       
 
 //        viewCard.layer.cornerRadius = 18
         
         bind()
     }
     
-    static func instantiate(viewModel: ListViewModel) -> ListViewController {
+    static func instantiate(viewModel: ListViewModel, delegate: ListViewControllerDelegate) -> ListViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let view = storyboard.instantiateViewController(withIdentifier: "ListViewController") as! ListViewController
         view.viewModel = viewModel
+        view._delegate = delegate
         return view
     }
     
@@ -55,15 +63,20 @@ class ListViewController: UIViewController {
             }.drive(tableView.rx.items(cellIdentifier: "cell")) { index, model,
                 cell in
                 cell.textLabel?.text = model.name
+                cell.backgroundColor = .clear
+                cell.textLabel?.textColor = .white
+                cell.textLabel?.font = UIFont(name: "Avenir", size: 17)
+                
+    
                 
             }.disposed(by: disposeBag)
             
             tableView.rx.itemSelected.bind { selectedIndex in
                 guard let selectedSw = self.viewModel.getSW(at:
                     selectedIndex.row) else { return }
-                let viewController = self.delegate?.didSelectSW(sw:
+                let viewController = self._delegate!.didSelectSW(sw:
                     selectedSw)
-                self.present(viewController!, animated: true, completion: nil)
+                self.present(viewController, animated: true, completion: nil)
                 
             }.disposed(by: disposeBag)
             

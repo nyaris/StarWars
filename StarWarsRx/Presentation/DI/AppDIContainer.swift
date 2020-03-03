@@ -27,13 +27,18 @@ extension AppDIContainer: JourneyViewControllerDelegate {
         let swRepo = SWRepositoryImpl()
         let usecase = SwUseCase(swRepository: swRepo)
         let vm = ListViewModel(usecase: usecase)
-        let vc = ListViewController.instantiate(viewModel: vm)
+        let vc = ListViewController.instantiate(viewModel: vm, delegate: self)
         
         return vc
-        
     }
-    
+}
 
+extension AppDIContainer: ListViewControllerDelegate {
+    func didSelectSW(sw: SWResponse) -> UIViewController {
+        let vm = DetailsViewModel(usecase: SwUseCase(swRepository: SWRepositoryImpl()), swResponse: sw)
+        let vc = DetailsViewController.instantiate(viewModel: vm)
+        return vc
+    }
 }
 
 

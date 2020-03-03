@@ -11,6 +11,6 @@ import RxSwift
 
 protocol SWRepository {
     func getSW() -> Single<[SWResponse]>
-    
+
 }
 

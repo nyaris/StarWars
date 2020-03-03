@@ -7,6 +7,10 @@ target 'StarWarsRx' do
 
   # Pods for StarWarsRx
 
+ pod 'Firebase/Auth'
+ pod 'Firebase/Analytics'
+ pod 'Firebase/Core'
+ pod 'Firebase/Firestore'
  pod 'RxSwift'
  pod 'RxCocoa'
  pod 'Moya/RxSwift'

@@ -20,7 +20,7 @@ public class ListViewModel: ListViewModelContract {
     
     private let swListRelay: BehaviorRelay<[SWResponse]?> =
         BehaviorRelay(value: nil)
-    public var swList: Driver<[SWResponse]?> { return
+    public var swList: Driver<[SWResponse]?>{ return
         swListRelay.asDriver() }
     
     let disposeBag = DisposeBag()
@@ -42,5 +42,3 @@ public class ListViewModel: ListViewModelContract {
     }
     
 }
-
-
